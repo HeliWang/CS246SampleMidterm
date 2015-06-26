@@ -1,0 +1,16 @@
+#!/bin/bash
+for arg in `ls|egrep '.*\.cc'` ; do
+  if [ ${arg} -ot ${arg%.cc}.o ] ; then
+    echo "${arg%.cc}.o compiling"
+    g++ -c ${arg}
+	if [ ${?} -ne 0 ]; then 
+	  exit 1
+	fi
+  fi
+done
+
+echo "main compiling"
+g++ *.o -o main
+if [ ${?} -ne 0 ] ; then 
+  exit 1
+fi

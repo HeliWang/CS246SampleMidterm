@@ -1,0 +1,19 @@
+#!/bin/bash
+if [ ${#} -ne 1 ] ; then 
+	echo '1 vars!' 1>&2
+	exit 1
+fi
+
+total=0;
+failed=0;
+
+for args in `cat "${1}"` ; do
+  total=$((${total}+1))
+  if [ "`cat "${args}.valgrind"`" != "All heap blocks were freed -- no leaks are possible" ] ; then
+    failed=$((${failed}+1))
+    echo "FAILED ${1}"
+  fi
+done
+
+echo "Statistics: Passed: $(($total-$failed)) , Failed: $failed , Total: $total"
+  
